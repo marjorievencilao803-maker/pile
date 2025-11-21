@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudVault - Secure File Storage & Sharing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .gradient-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full bg-white shadow-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="gradient-primary w-10 h-10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cloud text-white text-lg"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900">CloudVault</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('features')" class="nav-link text-gray-700 font-medium hover:text-purple-600">Features</button>
+                    <button onclick="scrollToSection('security')" class="nav-link text-gray-700 font-medium hover:text-purple-600">Security</button>
+                    <button onclick="scrollToSection('collaboration')" class="nav-link text-gray-700 font-medium hover:text-purple-600">Collaboration</button>
+                    <button onclick="scrollToSection('pricing')" class="nav-link text-gray-700 font-medium hover:text-purple-600">Pricing</button>
+                </div>
+                <button onclick="showLoginModal()" class="gradient-primary text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 gradient-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-in">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Your Files, Secured & Synchronized
+                    </h1>
+                    <p class="text-xl text-purple-100 mb-8">
+                        Store, manage, and share files securely with advanced encryption, real-time sync, and powerful collaboration tools.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="showSignupModal()" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition transform hover:scale-105">
+                            Get Started Free
+                        </button>
+                        <button onclick="showDemoModal()" class="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition">
+                            Watch Demo
+                        </button>
+                    </div>
+                    <p class="text-purple-100 mt-6">No credit card required • 10GB free storage</p>
+                </div>
+                <div class="animate-fade-in relative">
+                    <div class="gradient-secondary p-1 rounded-2xl">
+                        <div class="bg-white rounded-2xl p-8">
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3 bg-purple-50 p-4 rounded-lg">
+                                    <i class="fas fa-file-pdf text-red-500 text-2xl"></i>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900">Document.pdf</p>
+                                        <p class="text-sm text-gray-500">2.4 MB</p>
+                                    </div>
+                                    <i class="fas fa-shield-alt text-green-500"></i>
+                                </div>
+                                <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                                    <i class="fas fa-image text-blue-500 text-2xl"></i>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900">Photo.jpg</p>
+                                        <p class="text-sm text-gray-500">3.1 MB</p>
+                                    </div>
+                                    <i class="fas fa-shield-alt text-green-500"></i>
+                                </div>
+                                <div class="flex items-center space-x-3 bg-green-50 p-4 rounded-lg">
+                                    <i class="fas fa-video text-green-500 text-2xl"></i>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-900">Video.mp4</p>
+                                        <p class="text-sm text-gray-500">45.8 MB</p>
+                                    </div>
+                                    <i class="fas fa-shield-alt text-green-500"></i>
+                                </div>
+                                <div class="bg-gray-900 text-white p-3 rounded-lg text-center">
+                                    <p class="text-sm font-medium">51.3 MB of 10 GB used</p>
+                                    <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slide-in">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Core Features</h2>
+                <p class="text-xl text-gray-600">Everything you need for secure file management</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="card-hover bg-gradient-to-br from-purple-50 to-transparent p-8 rounded-2xl border border-purple-100">
+                    <div class="gradient-primary w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-cloud-upload-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">File Storage</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Upload and save files securely</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Organize into folders</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Access anytime, anywhere</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Support for all file types</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="card-hover bg-gradient-to-br from-pink-50 to-transparent p-8 rounded-2xl border border-pink-100">
+                    <div class="gradient-secondary w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-share-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">File Sharing</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Share via secure links</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Control access levels</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Collaborate with teams</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Expiring share links</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="card-hover bg-gradient-to-br from-blue-50 to-transparent p-8 rounded-2xl border border-blue-100">
+                    <div class="w-16 h-16 rounded-lg flex items-center justify-center mb-6 bg-gradient-to-br from-blue-500 to-cyan-500">
+                        <i class="fas fa-sync-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Sync Across Devices</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Real-time synchronization</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Automatic backups</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Multi-device access</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-green-500 mt-1"></i>
+                            <span>Offline access available</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slide-in">
+                <h2 class="text-4xl font-bold mb-4">Enterprise-Grade Security</h2>
+                <p class="text-xl text-gray-300">Your data is protected with military-grade encryption</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="flex space-x-4">
+                        <div class="gradient-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-lock text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">End-to-End Encryption</h3>
+                            <p class="text-gray-400">AES-256 encryption for all files at rest and in transit</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="gradient-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-key text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Password Protection</h3>
+                            <p class="text-gray-400">Secure sharing links with optional password protection</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="gradient-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Access Control</h3>
+                            <p class="text-gray-400">Granular permissions and user access management</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="gradient-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-history text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Audit Logs</h3>
+                            <p class="text-gray-400">Complete activity tracking and compliance reports</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                <span>SSL/TLS Encryption</span>
+                            </div>
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                <span>2FA Authentication</span>
+                            </div>
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                <span>GDPR Compliant</span>
+                            </div>
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                <span>ISO 27001 Certified</span>
+                            </div>
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                <span>Regular Security Audits</span>
+                            </div>
+                            <i class="fas fa-shield-alt text-green-500"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Section -->
+    <section id="collaboration" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slide-in">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Collaboration Tools</h2>
+                <p class="text-xl text-gray-600">Work together seamlessly with your team</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-purple-50 to-transparent p-8 rounded-2xl border border-purple-100 card-hover">
+                    <div class="gradient-primary w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-history text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Version History</h3>
+                    <p class="text-gray-700 mb-4">Track all changes to your files with complete version control. Restore previous versions with a single click.</p>
+                    <div class="bg-white p-4 rounded-lg space-y-2">
+                        <p class="text-sm text-gray-600"><span class="font-semibold text-gray-900">v3.2</span> - Latest (2 hours ago)</p>
+                        <p class="text-sm text-gray-600"><span class="font-semibold text-gray-900">v3.1</span> - Yesterday at 3:45 PM</p>
+                        <p class="text-sm text-gray-600"><span class="font-semibold text-gray-900">v3.0</span> - 2 days ago</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-pink-50 to-transparent p-8 rounded-2xl border border-pink-100 card-hover">
+                    <div class="gradient-secondary w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-comments text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Comments & Activity</h3>
+                    <p class="text-gray-700 mb-4">Leave comments on files and folders. See real-time activity updates from your team members.</p>
+                    <div class="bg-white p-4 rounded-lg space-y-3">
+                        <div class="border-l-4 border-purple-500 pl-3">
+                            <p class="text-sm font-semibold text-gray-900">Sarah commented</p>
+                            <p class="text-sm text-gray-600">"Please review these changes"</p>
+                        </div>
+                        <div class="border-l-4 border-pink-500 pl-3">
+                            <p class="text-sm font-semibold text-gray-900">John uploaded</p>
+                            <p class="text-sm text-gray-600">Updated_Document.pdf</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-transparent p-8 rounded-2xl border border-blue-100 card-hover">
+                    <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6 bg-gradient-to-br from-blue-500 to-cyan-500">
+                        <i class="fas fa-edit text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Real-Time Co-Editing</h3>
+                    <p class="text-gray-700 mb-4">Edit documents simultaneously with your team. See cursor positions and changes in real-time.</p>
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-2">Currently editing:</p>
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">S</div>
+                            <div class="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-bold">J</div>
+                            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">M</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-transparent p-8 rounded-2xl border border-green-100 card-hover">
+                    <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6 bg-gradient-to-br from-green-500 to-emerald-500">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Team Collaboration</h3>
+                    <p class="text-gray-700 mb-4">Create teams, assign roles, and manage permissions. Perfect for organizations of any size.</p>
+                    <div class="bg-white p-4 rounded-lg space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-gray-900">Owner</span>
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Full Access</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-gray-900">Editor</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Edit & Share</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-gray-900">Viewer</span>
+                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">View Only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-slide-in">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-xl text-gray-600">Choose the plan that fits your needs</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Starter Plan -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 card-hover">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
+                    <p class="text-gray-600 mb-6">Perfect for individuals</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-900">Free</span>
+                        <p class="text-gray-600 text-sm mt-2">10 GB storage</p>
+                    </div>
+                    <button onclick="showSignupModal()" class="w-full bg-gray-100 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-200 transition mb-6">
+                        Get Started
+                    </button>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">10 GB storage</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Basic sharing</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">File encryption</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-times text-gray-300"></i>
+                            <span class="text-gray-400">Advanced features</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="bg-white p-8 rounded-2xl border-2 border-purple-500 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gradient-primary text-white px-4 py-1 text-sm font-bold">POPULAR</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Professional</h3>
+                    <p class="text-gray-600 mb-6">For professionals & small teams</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-900">$9.99</span>
+                        <span class="text-gray-600">/month</span>
+                        <p class="text-gray-600 text-sm mt-2">1 TB storage</p>
+                    </div>
+                    <button onclick="showSignupModal()" class="gradient-primary w-full text-white py-3 rounded-lg font-semibold hover:shadow-lg transition mb-6">
+                        Start Free Trial
+                    </button>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">1 TB storage</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Advanced sharing</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Version history</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Priority support</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 card-hover">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                    <p class="text-gray-600 mb-6">For large organizations</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-900">Custom</span>
+                        <p class="text-gray-600 text-sm mt-2">Unlimited storage</p>
+                    </div>
+                    <button onclick="showContactModal()" class="w-full bg-purple-100 text-purple-600 py-3 rounded-lg font-semibold hover:bg-purple-200 transition mb-6">
+                        Contact Sales
+                    </button>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Unlimited storage</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Team collaboration</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">Advanced security</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span class="text-gray-700">24/7 support</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-primary text-white">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 animate-slide-in">
+            <h2 class="text-4xl font-bold mb-6">Ready to Secure Your Files?</h2>
+            <p class="text-xl text-purple-100 mb-8">Join thousands of users who trust CloudVault with their important files.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="showSignupModal()" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition transform hover:scale-105">
+                    Start Your Free Account
+                </button>
+                <button onclick="showDemoModal()" class="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition">
+                    Schedule a Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="gradient-primary w-8 h-8 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cloud text-white"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white">CloudVault</span>
+                    </div>
+                    <p class="text-sm">Secure file storage and collaboration platform</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><button onclick="scrollToSection('features')" class="hover:text-white transition">Features</button></li>
+                        <li><button onclick="scrollToSection('security')" class="hover:text-white transition">Security</button></li>
+                        <li><button onclick="scrollToSection('pricing')" class="hover:text-white transition">Pricing</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><button class="hover:text-white transition">About Us</button></li>
+                        <li><button class="hover:text-white transition">Blog</button></li>
+                        <li><button class="hover:text-white transition">Careers</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><button class="hover:text-white transition">Privacy Policy</button></li>
+                        <li><button class="hover:text-white transition">Terms of Service</button></li>
+                        <li><button class="hover:text-white transition">Contact</button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-sm">&copy; 2025 CloudVault. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <button class="hover:text-white transition"><i class="fab fa-facebook"></i></button>
+                        <button class="hover:text-white transition"><i class="fab fa-twitter"></i></button>
+                        <button class="hover:text-white transition"><i class="fab fa-linkedin"></i></button>
+                        <button class="hover:text-white transition"><i class="fab fa-instagram"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Sign Up Modal -->
+    <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 animate-slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Create Account</h2>
+                <button onclick="closeModal('signupModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" placeholder="john@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" placeholder="••••••••" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" class="w-4 h-4 text-purple-600">
+                    <label for="terms" class="ml-2 text-sm text-gray-700">I agree to the Terms of Service</label>
+                </div>
+                <button type="button" onclick="handleSignup()" class="gradient-primary w-full text-white py-2 rounded-lg font-semibold hover:shadow-lg transition">
+                    Create Account
+                </button>
+                <p class="text-center text-sm text-gray-600">
+                    Already have an account? <button type="button" onclick="switchModal('loginModal')" class="text-purple-600 font-semibold hover:underline">Sign In</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 animate-slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Sign In</h2>
+                <button onclick="closeModal('loginModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" placeholder="john@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" placeholder="••••••••" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-purple-600">
+                        <span class="ml-2 text-sm text-gray-700">Remember me</span>
+                    </label>
+                    <button type="button" class="text-purple-600 text-sm font-semibold hover:underline">Forgot password?</button>
+                </div>
+                <button type="button" onclick="handleLogin()" class="gradient-primary w-full text-white py-2 rounded-lg font-semibold hover:shadow-lg transition">
+                    Sign In
+                </button>
+                <p class="text-center text-sm text-gray-600">
+                    Don't have an account? <button type="button" onclick="switchModal('signupModal')" class="text-purple-600 font-semibold hover:underline">Create one</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 animate-slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Schedule a Demo</h2>
+                <button onclick="closeModal('demoModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" placeholder="john@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                    <input type="text" placeholder="Your Company" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Date</label>
+                    <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <button type="button" onclick="handleDemo()" class="gradient-primary w-full text-white py-2 rounded-lg font-semibold hover:shadow-lg transition">
+                    Schedule Demo
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 animate-slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
+                <button onclick="closeModal('contactModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" placeholder="john@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                    <input type="text" placeholder="Your Company" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                    <textarea placeholder="Tell us about your needs..." rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"></textarea>
+                </div>
+                <button type="button" onclick="handleContact()" class="gradient-primary w-full text-white py-2 rounded-lg font-semibold hover:shadow-lg transition">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center animate-slide-in">
+            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-green-500 text-2xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Success!</h2>
+            <p id="successMessage" class="text-gray-600 mb-6">Your request has been submitted successfully.</p>
+            <button onclick="closeModal('successModal')" class="gradient-primary text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition w-full">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function showSignupModal() {
+            closeAllModals();
+            document.getElementById('signupModal').classList.remove('hidden');
+        }
+
+        function showLoginModal() {
+            closeAllModals();
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function showDemoModal() {
+            closeAllModals();
+            document.getElementById('demoModal').classList.remove('hidden');
+        }
+
+        function showContactModal() {
+            closeAllModals();
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function closeAllModals() {
+            document.getElementById('signupModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('demoModal').classList.add('hidden');
+            document.getElementById('contactModal').classList.add('hidden');
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function switchModal(targetModalId) {
+            closeAllModals();
+            document.getElementById(targetModalId).classList.remove('hidden');
+        }
+
+        function handleSignup() {
+            document.getElementById('successMessage').textContent = 'Account created successfully! Check your email to verify your account.';
+            closeModal('signupModal');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function handleLogin() {
+            document.getElementById('successMessage').textContent = 'Logged in successfully! Redirecting to dashboard...';
+            closeModal('loginModal');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function handleDemo() {
+            document.getElementById('successMessage').textContent = 'Demo scheduled! You will receive a confirmation email shortly.';
+            closeModal('demoModal');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function handleContact() {
+            document.getElementById('successMessage').textContent = 'Thank you! Our sales team will contact you within 24 hours.';
+            closeModal('contactModal');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            const modals = ['signupModal', 'loginModal', 'demoModal', 'contactModal', 'successModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
